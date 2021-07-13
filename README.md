@@ -1,4 +1,4 @@
-## Progress ![Progress](https://progress-bar.dev/11/?title=8/76)
+## Progress ![Progress](https://progress-bar.dev/12/?title=9/76)
 
 # Section 1: Magento Architecture & Customization Techniques (33%)
 
