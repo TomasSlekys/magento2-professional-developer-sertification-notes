@@ -133,9 +133,31 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/prep
 
 ## 1.5 Demonstrate ability to use plugins
 
----
-
 > ### Demonstrate an understanding of plugins. 
+
+A plugin, or interceptor, is a class that modifies the behavior of public class functions by intercepting a function
+call and running code before, after, or around that function call. This allows you to *substitute* or *extend* the behavior
+of original, public methods for any *class* or *interface*.
+
+Extensions that wish to intercept and change the behavior of a public method can create a `Plugin` class.
+
+This interception approach reduces conflicts among extensions that change the behavior of the same class or method. 
+Your `Plugin` class implementation changes the behavior of a class function, but it does not change the class itself. 
+Magento calls these interceptors sequentially according to a configured sort order, so they do not conflict with one 
+another.
+
+**Limitations**  
+Plugins can not be used on following:
+
+* Final methods
+* Final classes
+* Non-public methods
+* Class methods (such as static methods)
+* `__construct` and `__destruct`
+* Virtual types
+* Objects that are instantiated before `Magento\Framework\Interception` is bootstrapped
+
+Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/plugins.html
 
 ---
 
@@ -338,6 +360,24 @@ The following example adds the `footer_content` column to the `cms_page` table.
     </table>
 </schema>
 ```
+
+To rename a column, delete the original column declaration and create a new one. In the new column declaration, use the 
+`onCreate` attribute to specify which column to migrate data from. Use the following construction to migrate data from 
+the same table.
+
+The following example renames the column `description` to `body`.
+
+```diff
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+	<table name="custom_table">
+-		<column xsi:type="varchar" name="description" nullable="false" length="255" comment="Description"/>
++		<column xsi:type="varchar" name="body" onCreate="migrateDataFrom(description)" nullable="false" length="255" comment="Body"/>
+	</table>
+</schema>
+```
+
+Source: https://www.dckap.com/blog/declarative-schema-magento-2/
 
 ---
 
