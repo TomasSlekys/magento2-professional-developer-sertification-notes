@@ -4,7 +4,7 @@
 
 ---
 
-> ### What are the responsibilities of each of the ORM object types? How do they relate to one another?
+> ### 4.1.1 What are the responsibilities of each of the ORM object types? How do they relate to one another?
 
 ---
 
@@ -12,7 +12,7 @@
 
 ---
 
-> ### How do you use the native Magento save/load process in the development process?
+> ### 4.2.1 How do you use the native Magento save/load process in the development process?
 
 ---
 
@@ -128,13 +128,13 @@ Source: https://devdocs.magento.com/guides/v2.2/extension-dev-guide/searching-wi
 
 ---
 
-> ### How do you select a subset of records from the database?
+> ### 4.3.1 How do you select a subset of records from the database?
 
 ---
 
 ## 4.4 Demonstrate an ability to use declarative schema
 
-> ### How do you add a column using declarative schema?
+> ### 4.4.1 How do you add a column using declarative schema?
 
 The following example adds the `date_closed` column.
 
@@ -150,7 +150,7 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/declarative-
 
 ---
 
-> ### How do you modify a table added by another module?
+> ### 4.4.2 How do you modify a table added by another module?
 
 The following example adds the `footer_content` column to the `cms_page` table.
 
@@ -182,7 +182,7 @@ Source: https://www.dckap.com/blog/declarative-schema-magento-2/
 
 ---
 
-> ### How do you delete a column?
+> ### 4.4.3 How do you delete a column?
 
 To drop a column in the same module, remove the node from `db_schema.xml`. The following example removes the `date_closed` column by deleting its `column` node:
 
@@ -217,7 +217,7 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/declarative-
 
 ---
 
-> ### How do you add an index or foreign key using declarative schema?
+> ### 4.4.4 How do you add an index or foreign key using declarative schema?
 
 **Add an index**  
 Use the `index` node.  
@@ -269,7 +269,7 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/declarative-
 
 ---
 
-> ### How do you manipulate data using data patches?
+> ### 4.4.5 How do you manipulate data using data patches?
 
 **What is a data patch?**  
 A data patch is a class that contains data modification instructions. It is defined in a `<Vendor>/<Module_Name>/Setup/Patch/Data/<Patch_Name>.php` file and implements `\Magento\Framework\Setup\Patch\DataPatchInterface`.
@@ -370,7 +370,7 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/declarative-
 
 ---
 
-> ### What is the purpose of schema patches?
+> ### 4.4.6 What is the purpose of schema patches?
 
 **What is a schema patch?**  
 
