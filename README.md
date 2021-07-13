@@ -536,67 +536,68 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/declarative-
 
 Schema patch example (Source: https://store.magenest.com/blog/schema-patch/):
 
-> In MyModule/Setup/Patch/Schema/AddColumn.php. Now, I want to add columns to the Table2
-> 
-> ```php
-> <?php
-> /**
-> * Copyright © 2019 Magenest. All rights reserved.
-> * See COPYING.txt for license details.
-> */
-> namespace Magenest\MyModule\Setup\Patch\Schema;
-> 
-> 
-> use Magento\Framework\DB\Ddl\Table;
-> use Magento\Framework\Setup\Patch\SchemaPatchInterface;
-> use Magento\Framework\Setup\ModuleDataSetupInterface;
-> 
-> 
-> class AddColumn implements SchemaPatchInterface
-> {
->    private $moduleDataSetup;
-> 
-> 
->    public function __construct(
->        ModuleDataSetupInterface $moduleDataSetup
->    ) {
->        $this->moduleDataSetup = $moduleDataSetup;
->    }
-> 
-> 
->    public static function getDependencies()
->    {
->        return [];
->    }
-> 
-> 
->    public function getAliases()
->    {
->        return [];
->    }
-> 
-> 
->    public function apply()
->    {
->        $this->moduleDataSetup->startSetup();
-> 
-> 
->        $this->moduleDataSetup->getConnection()->addColumn(
->            $this->moduleDataSetup->getTable('intray_table2'),
->            'name',
->            [
->                'type' => Table::TYPE_TEXT,
->                'length' => 255,
->                'nullable' => true,
->                'comment'  => 'Name',
->            ]
->        );
-> 
-> 
->        $this->moduleDataSetup->endSetup();
->    }
-> }
-> ```
+Patch file `MyModule/Setup/Patch/Schema/AddColumn.php`.  
+Teh following patch adds the `name` column to the `intray_table2` table.
+
+```php
+<?php
+/**
+* Copyright © 2019 Magenest. All rights reserved.
+* See COPYING.txt for license details.
+*/
+namespace Magenest\MyModule\Setup\Patch\Schema;
+
+
+use Magento\Framework\DB\Ddl\Table;
+use Magento\Framework\Setup\Patch\SchemaPatchInterface;
+use Magento\Framework\Setup\ModuleDataSetupInterface;
+
+
+class AddColumn implements SchemaPatchInterface
+{
+   private $moduleDataSetup;
+
+
+   public function __construct(
+       ModuleDataSetupInterface $moduleDataSetup
+   ) {
+       $this->moduleDataSetup = $moduleDataSetup;
+   }
+
+
+   public static function getDependencies()
+   {
+       return [];
+   }
+
+
+   public function getAliases()
+   {
+       return [];
+   }
+
+
+   public function apply()
+   {
+       $this->moduleDataSetup->startSetup();
+
+
+       $this->moduleDataSetup->getConnection()->addColumn(
+           $this->moduleDataSetup->getTable('intray_table2'),
+           'name',
+           [
+               'type' => Table::TYPE_TEXT,
+               'length' => 255,
+               'nullable' => true,
+               'comment'  => 'Name',
+           ]
+       );
+
+
+       $this->moduleDataSetup->endSetup();
+   }
+}
+```
 
 ---
 
