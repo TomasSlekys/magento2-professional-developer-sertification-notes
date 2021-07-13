@@ -103,6 +103,8 @@ To drop a column declared in another module, redeclare it with the `disabled` at
 </schema>
 ```
 
+It is possible to drop a column only if it exists in the `db_schema_whitelist.json` file.
+
 Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/declarative-schema/db-schema.html#drop-a-column-from-a-table
 
 ---
