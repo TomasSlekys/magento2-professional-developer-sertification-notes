@@ -1,4 +1,4 @@
-## Progress ![Progress](https://progress-bar.dev/9/?title=7/76)
+## Progress ![Progress](https://progress-bar.dev/11/?title=8/76)
 
 # Section 1: Magento Architecture & Customization Techniques (33%)
 
@@ -523,12 +523,16 @@ The following code sample defines a data patch class that has a dependency.
     }
 ```
 
-**What is a schema patch?**  
-A schema patch contains custom schema modification instructions. These modifications can be complex. It is defined in a `<Vendor>/<Module_Name>/Setup/Patch/Schema/<Patch_Name>.php` file and implements `\Magento\Framework\Setup\Patch\SchemaPatchInterface`.
+Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/declarative-schema/data-patches.html
 
 ---
 
 > ### What is the purpose of schema patches?
+
+**What is a schema patch?**  
+A schema patch contains custom schema modification instructions. These modifications can be complex. It is defined in a `<Vendor>/<Module_Name>/Setup/Patch/Schema/<Patch_Name>.php` file and implements `\Magento\Framework\Setup\Patch\SchemaPatchInterface`.
+
+Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/declarative-schema/data-patches.html
 
 ---
 
