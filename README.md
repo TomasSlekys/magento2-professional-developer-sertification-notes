@@ -1,4 +1,4 @@
-## Progress ![Progress](https://progress-bar.dev/0/?title=0/76)
+## Progress ![Progress](https://progress-bar.dev/3/?title=2/76)
 
 # Section 1: Magento Architecture & Customization Techniques (33%)
 
@@ -10,7 +10,48 @@
 
 > ### What are the different Composer package types? 
 
+| Name | Package Type | Description |
+| :--: | :----------: | :---------- |
+| Metapackage | metapackage | Technically, a Composer package type, not a Magento component type. A metapackage consists of only a `composer.json` file that specifies a list of components and their dependencies. For example, both Magento Open Source and Magento Commerce are metapackages. |
+| Module | magento2-module | Code that modifies Magento application behavior. You can upload a single module to the Magento Marketplace or your module can be dependent on some parent package. |
+| Theme | magento2-theme | Code that modifies the look and feel of the storefront or Magento Admin. |
+| Language Package | magento2-language | Translations for the storefront or Admin. |
+| Library | magento2-library | Support for libraries located in lib/internal instead of in the vendor directory. |
+| Component | magento2-component | The package formed of the files that must be located in root (.htaccess, etc). This includes dev/tests and setup as well for now. |
+
+---
+
+>> Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/dev-modtypes.html
+
+---
+
 > ### When would you place a module in the app/code folder versus another location?
+
+Use `app/code/` for development or project-specific modules. Custom built modules and modules you build to extend other functionality.
+
+Use `vendor/` for public modules (version controlled)
+
+---
+
+Root directory location  
+A component’s root directory matches the component’s name and contains all its subdirectories and files. Based on how you installed Magento, you can put your component’s root directory in one of two places:
+
+`<Magento install directory>/app`: This is the recommended location for component development. You can set up this environment by Cloning the Magento 2 GitHub repository.
+
+* For modules, use app/code.
+* For storefront themes, use app/design/frontend.
+* For Admin themes, use app/design/adminhtml.
+* For language packages, use app/i18n.
+
+`<Magento install directory>/vendor`: You will find this location for installations that use the composer create-project to install the Magento 2 metapackage (which downloads the CE or EE code).
+
+Magento installs third-party components in the `<Magento install directory>/vendor` directory. But we recommend adding your components to the `<Magento install directory>/app/code` directory. If you add your component to the `<Magento install directory>/vendor` directory, Git will ignore it because Magento adds the vendor directory to the `<Magento install directory>/.gitignore` file.
+
+---
+
+>> Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/prepare_file-str.html
+
+---
 
 ## 1.2 Describe the Magento directory structure
 
