@@ -16,12 +16,12 @@
 | Module | magento2-module | Code that modifies Magento application behavior. You can upload a single module to the Magento Marketplace or your module can be dependent on some parent package. |
 | Theme | magento2-theme | Code that modifies the look and feel of the storefront or Magento Admin. |
 | Language Package | magento2-language | Translations for the storefront or Admin. |
-| Library | magento2-library | Support for libraries located in lib/internal instead of in the vendor directory. |
-| Component | magento2-component | The package formed of the files that must be located in root (.htaccess, etc). This includes dev/tests and setup as well for now. |
+| Library | magento2-library | Support for libraries located in `lib/internal` instead of in the `vendor` directory. |
+| Component | magento2-component | The package formed of the files that must be located in root (`.htaccess`, etc). This includes dev/tests and setup as well for now. |
 
 ---
 
->> Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/dev-modtypes.html
+Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/dev-modtypes.html
 
 ---
 
@@ -38,10 +38,10 @@ A component’s root directory matches the component’s name and contains all i
 
 `<Magento install directory>/app`: This is the recommended location for component development. You can set up this environment by Cloning the Magento 2 GitHub repository.
 
-* For modules, use app/code.
-* For storefront themes, use app/design/frontend.
-* For Admin themes, use app/design/adminhtml.
-* For language packages, use app/i18n.
+* For modules, use `app/code`.
+* For storefront themes, use `app/design/frontend`.
+* For Admin themes, use `app/design/adminhtml`.
+* For language packages, use `app/i18n`.
 
 `<Magento install directory>/vendor`: You will find this location for installations that use the composer create-project to install the Magento 2 metapackage (which downloads the CE or EE code).
 
@@ -49,7 +49,7 @@ Magento installs third-party components in the `<Magento install directory>/vend
 
 ---
 
->> Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/prepare_file-str.html
+Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/prepare_file-str.html
 
 ---
 
