@@ -4,7 +4,11 @@
 
 ---
 
-> ### 4.1.1 What are the responsibilities of each of the ORM object types? How do they relate to one another?
+> ### 4.1.1 What are the responsibilities of each of the ORM object types?
+
+---
+
+> ### 4.1.2 How do they relate to one another?
 
 ---
 
