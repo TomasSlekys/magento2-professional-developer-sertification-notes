@@ -4,11 +4,76 @@
 
 ---
 
-> ### 4.1.1 What are the responsibilities of each of the ORM object types?
+> ### 4.1.1 What are the responsibilities of each of the ORM object types? How do they relate to one another?
 
----
+Object Relational Mapping (ORM) is a programming technique for converting between types of data and objects in OOP. There are 2 types of ORM:
 
-> ### 4.1.2 How do they relate to one another?
+* Convert different types of data to objects
+
+* Convert objects to various types of data
+
+Models in Magento are divided into 3 types:
+
+**1. Models working with incoherent data**: The typical example for this type is `adminhtml/system_config_source_yesno` model with the content below:
+
+```php
+class Mage_Adminhtml_Model_System_Config_Source_Yesno
+{
+    public function toOptionArray(){
+        return array(
+            array('value' => 1, 'label' => Mage::helper('adminhtml')->__('Yes')),
+            array('value' => 0, 'label' => Mage::helper('adminhtml')->__('No')),
+        );
+    }
+}
+```
+
+Data that this type of models works with is 0/1 value and Yes/No label. The model doesn't get data from the database 
+and doesn't write data in the database as well.
+
+**2. Models working with XML database**: such as the `core/config` model. This model works with XML files which are 
+   configuration files in Magento. The loading data function of the model is as follows:
+   
+```php
+public function loadBase(){
+    $etcDir = $this->getOptions()->getEtcDir();
+    $files = glob($etcDir . DS . '*.xml');
+    $this->loadFile(current($files));
+    
+    while ($file = next($files)) {
+        $merge = clone $this->_prototype;
+        $merge->loadFile($file);
+        $this->extend($merge);
+    }
+    
+    if (in_array($etcDir . DS . 'local.xml', $files)) {
+        $this->_isLocalConfigLoaded = true;
+    }
+    
+    return $this;
+}
+```
+
+**3. Models working with SQL database**: read data from and write data to the database through the SQL structure query 
+   demand. The responsibility of these models is to change actions to the data query demands.  
+**3.1.** Models working with one database table (such as `core/website` model). This model works with one table in the 
+database. Loading or saving the data will just relate to this table. For instance:
+
+```php
+$website = Mage::getModel('core/website')->load(0);
+$website->setId(1)->save();
+```
+
+**3.2.** Models working with multi – database table: work with EVA database. For example: `catalog/product` model. In 
+this case, loading or saving data will be relevant to a set of tables. This model has to map the data of multi-table to 
+its object. The data query will be implemented during using this model.
+
+```php
+$product = Mage::getModel('catalog/product')->load(1);
+$product->setId(2)->save();
+```
+
+Source: https://blog.magestore.com/magento-orm/
 
 ---
 
