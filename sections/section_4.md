@@ -4,15 +4,46 @@
 
 ---
 
-> ### 4.1.1 What are the responsibilities of each of the ORM object types? How do they relate to one another?
+> ### 4.1.1 What are the responsibilities of each of the ORM object types (models, resource models, and collections)?
 
-Object Relational Mapping (ORM) is a programming technique for converting between types of data and objects in OOP. There are 2 types of ORM:
+#### Models
 
-* Convert different types of data to objects
+> Models are data and behavior, representing entities. Anything represented by a database table is most likely going to 
+> be a model.
+> 
+> The model has no direct access to the database, only the resource models.
+> 
+> Models contain methods only for managing objects with data which is supposed to be prepared for saving to a database or 
+> loading to a frontend.
 
-* Convert objects to various types of data
+Source: https://belvg.com/blog/database-in-magento-2-models-resource-models-and-collections.html
 
-Source: https://blog.magestore.com/magento-orm/
+> Each domain-layer model contains a reference to a resource model, which it uses to retrieve data from the database 
+> with MySql calls. This resource model contains logic for connecting to the underlying database, typically MySQL. 
+> A model requires a resource model only if the model data must persist.
+
+Source: https://devdocs.magento.com/guides/v2.4/architecture/archi_perspectives/domain_layer.html?itm_source=devdocs&itm_medium=search_page&itm_campaign=federated_search&itm_term=models#models
+
+#### Resource models
+
+> Resource Models are data mappers for the storage structure. They are used for making transactions to the database.
+
+Source: https://belvg.com/blog/database-in-magento-2-models-resource-models-and-collections.html
+
+#### Collections
+
+> Collections are encapsulating sets of models and related functionality, such as filtering, sorting, and paging.
+> 
+> A collection in Magento is a class that implements both the IteratorAggregate and the Countable PHP5 SPL interfaces. 
+> Collections are widely used in Magento to store a set of objects of a specific type.
+
+Source: https://belvg.com/blog/database-in-magento-2-models-resource-models-and-collections.html
+
+> ### 4.1.2 How do they (models, resource models, and collections) relate to one another?
+
+![image](images/orm_elements.png)
+
+Source: https://belvg.com/blog/database-in-magento-2-models-resource-models-and-collections.html
 
 ---
 
@@ -56,26 +87,26 @@ Source:
 
 ### **Collections**
 
-> #### Filter
->
+#### Filter
+
 > ```php
 > $collection->addFieldToFilter();
 > ```
 
-> #### Sort
->
+#### Sort
+
 > ```php
 > $collection->addOrder();
 > ```
 
-> #### Select Column
->
+#### Select Column
+
 > ```php
 > $collection->addFieldToSelect();
 > ```
 
-> #### Pagination
->
+#### Pagination
+
 > ```php
 > $collection->setPageSize();
 > $collection->setCurPage();
@@ -83,8 +114,8 @@ Source:
 
 ### **Repositories**
 
-> #### Filter
->
+#### Filter
+
 > The `Filter` class is the smallest part of a Search Criteria. It allows you to add a custom field, value, and condition type to the criteria.
 >
 > Example of how to define a Filter:
@@ -98,8 +129,8 @@ Source:
 > 
 > This filter will find all urls with the suffix of “magento.com”.
 
-> #### Filter Group
->
+#### Filter Group
+
 > The `FilterGroup` class acts like a collection of Filters that apply one or more criteria to a search.
 > 
 > The boolean `OR` statement joins Filters inside a single Filter Group.
@@ -134,8 +165,8 @@ Source:
 > The code above creates a Search Criteria with the Filters put together in the following way:  
 > `(url like %magento.com OR store_id eq 1) AND (url_type eq 1)`
 
-> #### Sort
-> 
+#### Sort
+ 
 > To apply sorting to the Search Criteria, use the `SortOrder` class.
 >
 > Field and direction make up the two parameters that define a Sort Order object. 
@@ -152,8 +183,8 @@ Source:
 > ```
 
 
-> #### Pagination
-> 
+#### Pagination
+ 
 > The `setPageSize` function paginates the Search Criteria by limiting the amount of entities it retrieves:
 >
 > ```php
