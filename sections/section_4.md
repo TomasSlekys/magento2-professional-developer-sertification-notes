@@ -197,6 +197,52 @@ Source: https://devdocs.magento.com/guides/v2.2/extension-dev-guide/searching-wi
 
 > ### 4.3.1 How do you select a subset of records from the database?
 
+Use `addFieldToSelect` and `addAttributeToSelect` methods to specify in the collection the fields for selection.
+
+For example:
+
+```php
+$productCollection->addFieldToSelect('custom_field');
+```
+
+To apply filters to collections, use `addAttributeToFilter($field, $condition)` 
+and `addFieldToFilter($field, $condition)` methods.
+
+Conditions can be the following:
+
+* 'eq' => equalValue
+* 'neq' => notEqualValue
+* 'like' => likeValue
+* 'nlike' => notLikeValue
+* 'is' => isValue
+* 'in' => inValues
+* 'nin' => notInValues
+* 'notnull' => valueIsNotNull
+* 'null' => valueIsNull
+* 'moreq' => moreOrEqualValue
+* 'gt' => greaterValue
+* 'lt' => lessValue
+* 'gteq' => greaterOrEqualValue
+* 'lteq' => lessOrEqualValue
+* 'finset' => valueInSet
+* 'from' => fromValue, “to” => toValue
+
+Example:
+
+```php
+$productCollection->addFieldToFilter('entity_id', array('in' => [1,2,3])
+```
+
+`setOrder` method is used for sorting and processes both filter and direction fields. For instance:
+
+```php
+$productCollection>setOrder('position','ASC');
+```
+
+`searchCriteria` is used for applying filters in repositories.
+
+Source: https://belvg.com/tutorial/magento-2-certified-professional-developer-guide-section-4
+
 ---
 
 ## 4.4 Demonstrate an ability to use declarative schema
