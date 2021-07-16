@@ -225,7 +225,8 @@ Conditions can be the following:
 * 'gteq' => greaterOrEqualValue
 * 'lteq' => lessOrEqualValue
 * 'finset' => valueInSet
-* 'from' => fromValue, “to” => toValue
+* 'from' => fromValue
+* 'to' => toValue
 
 Example:
 
