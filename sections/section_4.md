@@ -562,5 +562,3 @@ class AddColumn implements SchemaPatchInterface
    }
 }
 ```
-
----
