@@ -229,21 +229,21 @@ By editing `etc/acl.xml`. `sorOrder` defines the position where the option is di
 
 ```xml
 <acl>
-	<resources>
-	    <resource id="Magento_Backend::admin">
-		<resource id="Magenest_HelloWorld::helloworld" title="Hello World" sortOrder="51">
-		    <resource id="Magenest_HelloWorld::post" title="Manage Post" sortOrder="10"/>
-		    <resource id="Magenest_HelloWorld::helloworld_configuration" title="Configuration" sortOrder="99" />
-		</resource>
-		<resource id="Magento_Backend::stores">
-		    <resource id="Magento_Backend::stores_settings">
-			<resource id="Magento_Config::config">
-			    <resource id="Magenest_HelloWorld::helloworld_config" title="Hello World"/>
-			</resource>
-		    </resource>
-		</resource>
-	    </resource>
-	</resources>
+    <resources>
+        <resource id="Magento_Backend::admin">
+            <resource id="Magenest_HelloWorld::helloworld" title="Hello World" sortOrder="51">
+                <resource id="Magenest_HelloWorld::post" title="Manage Post" sortOrder="10"/>
+                <resource id="Magenest_HelloWorld::helloworld_configuration" title="Configuration" sortOrder="99" />
+            </resource>
+            <resource id="Magento_Backend::stores">
+                <resource id="Magento_Backend::stores_settings">
+                    <resource id="Magento_Config::config">
+                        <resource id="Magenest_HelloWorld::helloworld_config" title="Hello World"/>
+                    </resource>
+                </resource>
+            </resource>
+        </resource>
+    </resources>
 </acl>
 ```
 
