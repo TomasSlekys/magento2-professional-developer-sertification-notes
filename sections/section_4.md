@@ -85,6 +85,8 @@ Source:
 
 ## 4.3 Describe how to filter, sort, and specify the selected values for collections and repositories
 
+> ### 4.3.1 Overview
+
 ### **Collections**
 
 #### Filter
@@ -182,7 +184,6 @@ Source:
 > $searchCriteria->setSortOrders([$sortOrder]);
 > ```
 
-
 #### Pagination
  
 > The `setPageSize` function paginates the Search Criteria by limiting the amount of entities it retrieves:
@@ -195,7 +196,7 @@ Source: https://devdocs.magento.com/guides/v2.2/extension-dev-guide/searching-wi
 
 ---
 
-> ### 4.3.1 How do you select a subset of records from the database?
+> ### 4.3.2 How do you select a subset of records from the database?
 
 Use `addFieldToSelect` and `addAttributeToSelect` methods to specify in the collection the fields for selection.
 
