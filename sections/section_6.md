@@ -2,6 +2,8 @@
 
 ## 6.1 Identify / describe standard product types
 
+> ### 6.1.1 Overview
+
 | Product Type | Description |
 | ------------ | ----------- |
 | Simple | A simple product is a physical item with a single SKU. Simple products have a variety of pricing and of input controls which makes it possible to sell variations of the product. Simple products can be used in association with grouped, bundle, and configurable products. |
@@ -14,7 +16,7 @@
 
 ---
 
-> ### 6.1.1 How would you obtain a product of a specific type?
+> ### 6.1.2 How would you obtain a product of a specific type?
 
 To obtain a specific product type, build search criteria and retrieve them from the product repository:
 
@@ -36,7 +38,7 @@ public function getBundleProducts()
 
 ---
 
-> ### 6.1.2 What tools (in general) does a product type model provide?
+> ### 6.1.3 What tools (in general) does a product type model provide?
 
 The product type model is responsible for:
 
@@ -173,6 +175,10 @@ Examples from `\Magento\Catalog\Model\Product\Type\AbstractType`:
 
 > ### 6.2.1 How do you create and manage categories?
 
+Categories can be made in the admin panel under Category menu item and is a tree-link structure. 
+Categories can be made programmatically using `CategoryInterfaceFactory` object and saving 
+with `CategoryInterfaceRepository`.
+
 ---
 
 ## 6.3 Define how products are related to the category
@@ -180,6 +186,9 @@ Examples from `\Magento\Catalog\Model\Product\Type\AbstractType`:
 ---
 
 > ### 6.3.1 How do you assign and unassign products to categories?
+
+Navigate to `Catalog > Inventory > Products` in Magento Admin, select the product you wish to add to a category, and 
+use the `Categories` drop down selection options to assign it to categories.
 
 ---
 
@@ -189,9 +198,25 @@ Examples from `\Magento\Catalog\Model\Product\Type\AbstractType`:
 
 > ### 6.4.1 How are configurable and bundle products rendered?
 
+`view/frontend/layout/checkout_cart_item_renderers.xml` define how products are rendered in the cart.
+
+**Configurable**
+
+Configurable products are shown as a single line item. It is shown with the parent product's title and the simple 
+product option selected by the customer.
+
+**Bundle**
+
+Each product in the Bundle product is rendered as a single line item.
+
 ---
 
 > ### 6.4.2 How can you create a custom shopping cart renderer?
+
+You can customize the shopping cart by overriding `vendor/module/view/frontend/layout/checkout_cart_item_renderers.xml`. 
+
+The block class depends upon the `Magento\Checkout\Block\Cart\Item\Renderer` class and includes Actions like 
+`/Renderer/Action/Edit` and `/Renderer/Action/Remove`.
 
 ---
 
@@ -201,6 +226,11 @@ Examples from `\Magento\Catalog\Model\Product\Type\AbstractType`:
 
 > ### 6.5.1 How do you customize the shipment step of order management?
 
+Basic steps of customizing shipping includes adding an `etc/config.xml` file and an `etc/adminhtml/system.xml` file. 
+
+In order to extend and customize shipping, you must extend `\Magento\Shipping\Model\Carrier\AbstractCarrier` and 
+implement `\Magento\Shipping\Model\Carrier\CarrierInterface`.
+
 ---
 
 ## 6.6 Describe and customize operations available in the customer account area
@@ -209,9 +239,33 @@ Examples from `\Magento\Catalog\Model\Product\Type\AbstractType`:
 
 > ### 6.6.1 How would you add another tab in the “My Account” section?
 
+To add an additional menu tab in the customer "My Account" area create the layout file in 
+`Your_Company/Your_Module/view/frontend/layout/customer_account.xml`:
+
+```xml
+<body>
+    <referenceBlock name="customer_account_navigation">
+        <block class="Magento\Customer\Block\Account\SortLinkInterface" 
+               name="yourBlockName"
+               after="customer-account-navigation-address-link">
+            <arguments>
+                <argument name="label" xsi:type="string" translate="true">Your Label</argument>
+                <argument name="path" xsi:type="string">path/to/your/module/view/</argument>
+                <argument name="sortOrder" xsi:type="number">10</argument>
+            </arguments>
+        </block>
+    </referenceBlock>
+</body>
+```
+
 ---
 
 > ### 6.6.2 How do you customize the order history page?
+
+To customise the "Order History" page create the layout file in 
+`Your_Company/Your_Module/view/frontend/layout/sales_order_history.xml`. 
+
+The `sales.order.history.info` container is a common location for modifications to be made.
 
 ---
 
@@ -221,6 +275,18 @@ Examples from `\Magento\Catalog\Model\Product\Type\AbstractType`:
 
 > ### 6.7.1 How do you add or modify customer attributes in a setup script?
 
+Create `Your_Company/Your_Module/Setup/UpgradeData.php` with an `upgrade()` function:
+
+```php
+use Magento\Customer\Model\Customer;
+
+// ...
+
+$attribute = $this->eavConfig->getAttribute(Customer::ENTITY, Attribute::CUSTOMER_PROMOTION_PREFERENCE);
+$attribute->setData('used_in_forms', ['adminhtml_customer', 'customer_account_edit']);
+$attribute->save();
+```
+
 ---
 
 ## 6.8 Customize the customer address
@@ -228,5 +294,11 @@ Examples from `\Magento\Catalog\Model\Product\Type\AbstractType`:
 ---
 
 > ### 6.8.1 How do you add another field to the customer address entity using a setup script?
+
+To add another field to customer address using a setup script, you use `setup/InstallData.php` while using EAV.
+
+Make sure the attribute is assigned to a form (such as `customer_form_attribute` table) to make sure it is saveable. 
+
+The customer address field must be manually added just like other attributes.
 
 ---
