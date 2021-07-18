@@ -251,30 +251,9 @@ By editing `etc/acl.xml`. `sorOrder` defines the position where the option is di
 
 ## 5.4 Set up a menu item
 
-> ### 5.4.1 Overview
-
-```xml
-<config>
-    <menu>
-        <colin_slider>
-            <title>Slider</title>
-            <sort_order>80</sort_order>
-
-            <children>
-                <slider translate="title" module="colin_adminhtml">
-                    <title>Slider</title>
-                    <sort_order>10</sort_order>
-                    <action>colin_adminhtml/index</action>
-                </slider>
-            </children>
-        </colin_slider>
-    </menu>
-</config>
-```
-
 ---
 
-> ### 5.4.2 How do you add a new menu item to a given tab?
+> ### 5.4.1 How do you add a new menu item to a given tab?
 
 Adminhtml menu items are configured in `etc/adminhtml/menu.xml`. To add a new menu item, edit this file:
 
@@ -303,7 +282,7 @@ Adminhtml menu items are configured in `etc/adminhtml/menu.xml`. To add a new me
 
 ---
 
-> ### 5.4.3 How do you add a new tab to the Admin menu?
+> ### 5.4.2 How do you add a new tab to the Admin menu?
 
 Do not specify a `parent` attribute in the `<add>` node.
 
