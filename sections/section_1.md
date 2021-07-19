@@ -2,16 +2,19 @@
 
 ## 1.1 Describe the Magento module-based architecture
 
+
+
+> ### 1.1.1 What are the significant steps to add a new module?
+
+1. Create `composer.json`
+2. Create `registration.php`
+3. Create `etc/module.xml`
+4. Enable module via console command `php bin/magento module:enable Module_Name`
+5. Run console command `php bin/magento setup:upgrade`
+
 ---
 
-> ### Describe module architecture.
-
----
-
-> ### What are the significant steps to add a new module?
-
----
-> ### What are the different Composer package types?
+> ### 1.1.2 What are the different Composer package types?
 
 | Name | Package Type | Description |
 | :--: | :----------: | :---------- |
@@ -26,7 +29,7 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/dev-
 
 ---
 
-> ### When would you place a module in the app/code folder versus another location?
+> ### 1.1.3 When would you place a module in the app/code folder versus another location?
 
 Use `app/code/` for development or project-specific modules. Custom built modules and modules you build to extend other functionality.
 
@@ -54,15 +57,15 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/prep
 
 ---
 
-> ### Describe the Magento directory structure.
+> ### 1.2.1 Describe the Magento directory structure.
 
 ---
 
-> ### What are the naming conventions, and how are namespaces established?
+> ### 1.2.2 What are the naming conventions, and how are namespaces established?
 
 ---
 
-> ### How can you identify the files responsible for some functionality?
+> ### 1.2.3 How can you identify the files responsible for some functionality?
 
 ---
 
@@ -70,35 +73,35 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/prep
 
 ---
 
-> ### Determine how to use configuration files in Magento.
+> ### 1.3.1 Determine how to use configuration files in Magento.
 
 ---
 
-> ### Which configuration files are important in the development cycle?
+> ### 1.3.2 Which configuration files are important in the development cycle?
 
 ---
 
-> ### Describe development in the context of website and store scopes.
+> ### 1.3.3 Describe development in the context of website and store scopes.
 
 ---
 
-> ### How do you identify the configuration scope for a given variable?
+> ### 1.3.4 How do you identify the configuration scope for a given variable?
 
 ---
 
-> ### How do native Magento scopes (for example, price or inventory) affect development and decision-making processes?
+> ### 1.3.5 How do native Magento scopes (for example, price or inventory) affect development and decision-making processes?
 
 ---
 
-> ### Demonstrate an ability to add different values for different scopes.
+> ### 1.3.6 Demonstrate an ability to add different values for different scopes.
 
 ---
 
-> ### How can you fetch a system configuration value programmatically?
+> ### 1.3.7 How can you fetch a system configuration value programmatically?
 
 ---
 
-> ### How can you override system configuration values for a given store using XML configuration?
+> ### 1.3.8 How can you override system configuration values for a given store using XML configuration?
 
 ---
 
@@ -106,37 +109,37 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/prep
 
 ---
 
-> ### Demonstrate the ability to use the dependency injection concept in Magento development.
+> ### 1.4.1 Demonstrate the ability to use the dependency injection concept in Magento development.
 
 ---
 
-> ### How are objects realized in code?
+> ### 1.4.2 How are objects realized in code?
 
 ---
 
-> ### Why is it important to have a centralized object creation process?
+> ### 1.4.3 Why is it important to have a centralized object creation process?
 
 ---
 
-> ### Identify how to use DI configuration files for customizing Magento.
+> ### 1.4.4 Identify how to use DI configuration files for customizing Magento.
 
 ---
 
-> ### How can you override a native class, inject your class into another object, and use other techniques available in di.xml (for example, virtualTypes)?
+> ### 1.4.5 How can you override a native class, inject your class into another object, and use other techniques available in di.xml (for example, virtualTypes)?
 
 ---
 
-> ### Given a scenario, determine how to obtain an object using the ObjectManager object.
+> ### 1.4.6 Given a scenario, determine how to obtain an object using the ObjectManager object.
 
 ---
 
-> ### How would you obtain a class instance from different places in the code?
+> ### 1.4.7 How would you obtain a class instance from different places in the code?
 
 ---
 
 ## 1.5 Demonstrate ability to use plugins
 
-> ### Demonstrate an understanding of plugins.
+> ### 1.5.1 Demonstrate an understanding of plugins.
 
 A plugin, or interceptor, is a class that modifies the behavior of public class functions by intercepting a function
 call and running code before, after, or around that function call. This allows you to *substitute* or *extend* the behavior
@@ -164,11 +167,11 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/plugins.html
 
 ---
 
-> ### How are plugins used in core code?
+> ### 1.5.2 How are plugins used in core code?
 
 ---
 
-> ### How can they be used for customizations?
+> ### 1.5.3 How can they be used for customizations?
 
 ---
 
@@ -176,19 +179,19 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/plugins.html
 
 ---
 
-> ### Demonstrate how to create a customization using an event observer.
+> ### 1.6.1 Demonstrate how to create a customization using an event observer.
 
 ---
 
-> ### How are observers registered? How are they scoped for frontend or backend?
+> ### 1.6.2 How are observers registered? How are they scoped for frontend or backend?
 
 ---
 
-> ### How are automatic events created, and how should they be used?
+> ### 1.6.3 How are automatic events created, and how should they be used?
 
 ---
 
-> ### How are scheduled jobs configured?
+> ### 1.6.4 How are scheduled jobs configured?
 
 ---
 
@@ -196,15 +199,15 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/plugins.html
 
 ---
 
-> ### Describe the usage of bin/magento commands in the development cycle.
+> ### 1.7.1 Describe the usage of bin/magento commands in the development cycle.
 
 ---
 
-> ### Which commands are available?
+> ### 1.7.2 Which commands are available?
 
 ---
 
-> ### How are commands used in the development cycle?
+> ### 1.7.3 How are commands used in the development cycle?
 
 ---
 
@@ -212,6 +215,6 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/plugins.html
 
 ---
 
-> ### How would you install and verify an extension by a customer’s request?
+> ### 1.8.1 How would you install and verify an extension by a customer’s request?
 
 ---

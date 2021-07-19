@@ -91,106 +91,106 @@ Source:
 
 #### Filter
 
-> ```php
-> $collection->addFieldToFilter();
-> ```
+```php
+$collection->addFieldToFilter();
+```
 
 #### Sort
 
-> ```php
-> $collection->addOrder();
-> ```
+```php
+$collection->addOrder();
+```
 
 #### Select Column
 
-> ```php
-> $collection->addFieldToSelect();
-> ```
+```php
+$collection->addFieldToSelect();
+```
 
 #### Pagination
 
-> ```php
-> $collection->setPageSize();
-> $collection->setCurPage();
-> ```
+```php
+$collection->setPageSize();
+$collection->setCurPage();
+```
 
 ### **Repositories**
 
 #### Filter
 
-> The `Filter` class is the smallest part of a Search Criteria. It allows you to add a custom field, value, and condition type to the criteria.
->
-> Example of how to define a Filter:
->
-> ```php
-> $filter
->     ->setField("url")
->     ->setValue("%magento.com")
->     ->setConditionType("like");
-> ```
-> 
-> This filter will find all urls with the suffix of “magento.com”.
+The `Filter` class is the smallest part of a Search Criteria. It allows you to add a custom field, value, and condition type to the criteria.
+
+Example of how to define a Filter:
+
+```php
+$filter
+    ->setField("url")
+    ->setValue("%magento.com")
+    ->setConditionType("like");
+``` 
+
+This filter will find all urls with the suffix of “magento.com”.
 
 #### Filter Group
 
-> The `FilterGroup` class acts like a collection of Filters that apply one or more criteria to a search.
-> 
-> The boolean `OR` statement joins Filters inside a single Filter Group.
-> 
-> The boolean `AND` statement joins Filter Groups inside a Search Criteria.
->
-> For example:
->
-> ```php
-> $filter1
->     ->setField("url")
->     ->setValue("%magento.com")
->     ->setConditionType("like");
->
-> $filter2
->     ->setField("store_id")
->     ->setValue("1")
->     ->setConditionType("eq");
->
-> $filterGroup1->setFilters([$filter1, $filter2]);
->
-> $filter3
->     ->setField("url_type")
->     ->setValue(1)
->     ->setConditionType("eq");
->
-> $filterGroup2->setFilters([$filter3]);
-> 
-> $searchCriteria->setFilterGroups([$filterGroup1, $filterGroup2]);
->```
->
-> The code above creates a Search Criteria with the Filters put together in the following way:  
-> `(url like %magento.com OR store_id eq 1) AND (url_type eq 1)`
+The `FilterGroup` class acts like a collection of Filters that apply one or more criteria to a search.
+ 
+The boolean `OR` statement joins Filters inside a single Filter Group.
+ 
+The boolean `AND` statement joins Filter Groups inside a Search Criteria.
+
+For example:
+
+```php
+$filter1
+    ->setField("url")
+    ->setValue("%magento.com")
+    ->setConditionType("like");
+
+$filter2
+    ->setField("store_id")
+    ->setValue("1")
+    ->setConditionType("eq");
+
+$filterGroup1->setFilters([$filter1, $filter2]);
+
+$filter3
+    ->setField("url_type")
+    ->setValue(1)
+    ->setConditionType("eq");
+
+$filterGroup2->setFilters([$filter3]);
+ 
+$searchCriteria->setFilterGroups([$filterGroup1, $filterGroup2]);
+```
+
+The code above creates a Search Criteria with the Filters put together in the following way:  
+`(url like %magento.com OR store_id eq 1) AND (url_type eq 1)`
 
 #### Sort
  
-> To apply sorting to the Search Criteria, use the `SortOrder` class.
->
-> Field and direction make up the two parameters that define a Sort Order object. 
-> The field is the name of the field to sort. The direction is the method of sorting whose value can be `ASC` or `DESC`.
->
-> The example below defines a Sort Order object that will sort the customer email in ascending order:
-> 
-> ```php
-> $sortOrder
->    ->setField("email")
->    ->setDirection("ASC");
-> 
-> $searchCriteria->setSortOrders([$sortOrder]);
-> ```
+To apply sorting to the Search Criteria, use the `SortOrder` class.
+
+Field and direction make up the two parameters that define a Sort Order object. 
+The field is the name of the field to sort. The direction is the method of sorting whose value can be `ASC` or `DESC`.
+
+The example below defines a Sort Order object that will sort the customer email in ascending order:
+ 
+```php
+$sortOrder
+   ->setField("email")
+   ->setDirection("ASC");
+ 
+$searchCriteria->setSortOrders([$sortOrder]);
+```
 
 #### Pagination
  
-> The `setPageSize` function paginates the Search Criteria by limiting the amount of entities it retrieves:
->
-> ```php
-> $searchCriteria->setPageSize(20); //retrieve 20 or less entities
-> ```
+The `setPageSize` function paginates the Search Criteria by limiting the amount of entities it retrieves:
+
+```php
+$searchCriteria->setPageSize(20); //retrieve 20 or less entities
+```
 
 Source: https://devdocs.magento.com/guides/v2.2/extension-dev-guide/searching-with-repositories.html
 

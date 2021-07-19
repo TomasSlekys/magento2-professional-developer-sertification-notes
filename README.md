@@ -1,6 +1,6 @@
 | Section | Progress |
 | ------- | -------- |
-| [Section 1: Magento Architecture & Customization Techniques (33%)](sections/section_1.md) | ![Progress](https://progress-bar.dev/9/?title=3/33) |
+| [Section 1: Magento Architecture & Customization Techniques (33%)](sections/section_1.md) | ![Progress](https://progress-bar.dev/12/?title=4/34) |
 | [Section 2: Request Flow Processing (7%)](sections/section_2.md) | ![Progress](https://progress-bar.dev/0/?title=0/6) |
 | [Section 3: Customizing the Magento UI (15%)](sections/section_3.md) | ![Progress](https://progress-bar.dev/0/?title=0/8) |
 | [Section 4: Working with Databases in Magneto (18%)](sections/section_4.md) | ![Progress](https://progress-bar.dev/100/?title=11/11) |
