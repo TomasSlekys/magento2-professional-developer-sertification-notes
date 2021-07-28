@@ -156,6 +156,11 @@ All URL rewrites are defined and edited in the admin panel under `Marketing > SE
 
 ---
 
-> ### How do you determine which page corresponds to a given user-friendly URL?
+> ### 2.3.2 How do you determine which page corresponds to a given user-friendly URL?
+
+Check `Marketing > SEO & Search > URL Rewrites`:
+
+* `Request path` is the user-friendly URL
+* `Target path` is the real page URL
 
 ---
