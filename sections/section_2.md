@@ -150,7 +150,9 @@ Or create a custom router to create a custom URL format.
 
 ---
 
-> ### How is the user-friendly URL of a product or category defined? How can you change it?
+> ### 2.3.1 How is the user-friendly URL of a product or category defined? How can you change it?
+
+All URL rewrites are defined and edited in the admin panel under `Marketing > SEO & Search > URL Rewrites`.
 
 ---
 
