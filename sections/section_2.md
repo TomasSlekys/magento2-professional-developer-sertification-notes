@@ -120,6 +120,20 @@ public function execute()
 
 > ### 2.2.2 How do you identify which module/controller corresponds to a given URL?
 
+**Standard router**
+
+A Magento URL that uses the standard router has the following format:
+
+`<store-url>/<store-code>/<front-name>/<controller-name>/<action-name>`
+
+Where:
+
+* `<store-url>` - specifies the base URL for the Magento instance
+* `<store-code>` - specifies the store context
+* `<front-name>` - specifies the `frontName` of the FrontController to use (for example, `[routesxml]`)
+* `<controller-name>` - specifies the name of the controller
+* `<action-name>` - specifies the action class to execute on the controller class
+
 ---
 
 > ### 2.2.3 What would you do to create a given URL?
