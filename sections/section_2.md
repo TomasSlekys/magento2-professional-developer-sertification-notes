@@ -64,11 +64,65 @@ When the deployment completes successfully, Magento returns to running in produc
 
 ---
 
-> ### 2.2.1 How do you identify which module/controller corresponds to a given URL?
+> ### 2.2.1 Returning different response types (HTML / JSON / redirect)
+
+**HTML**
+
+```php
+use Magento\Framework\Controller\Result\RawFactory;
+```
+
+```php
+public function execute()
+{
+    $result = $this->resultRawFactory->create();
+
+    // Return Raw Text or HTML data
+    // $result->setContents('Hello World');
+    $result->setContents('<strong>Hello World</strong>');
+
+    return $result;
+}
+```
+
+**JSON**
+```php
+use Magento\Framework\Controller\Result\JsonFactory;
+```
+
+```php
+public function execute()
+{
+    $resultJson = $this->resultJsonFactory->create();
+    return $resultJson->setData(['json_data' => 'come from json']);
+}
+```
+
+**Redirect**
+
+```php
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\Controller\Result\Redirect;
+```
+
+```php
+public function execute()
+{
+    $resultRedirect = $this->resultRedirectFactory->create();
+    $redirectLink = $this->_storeManager->getStore()->getBaseUrl() . 'customer/account/login'; 
+    $resultRedirect->setUrl($redirectLink);
+    
+    return $resultRedirect;
+}
+```
 
 ---
 
-> ### 2.2.2 What would you do to create a given URL?
+> ### 2.2.2 How do you identify which module/controller corresponds to a given URL?
+
+---
+
+> ### 2.2.3 What would you do to create a given URL?
 
 ---
 
