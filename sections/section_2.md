@@ -138,6 +138,12 @@ Where:
 
 > ### 2.2.3 What would you do to create a given URL?
 
+Either use the standard router to use format:
+
+`<store-url>/<store-code>/<front-name>/<controller-name>/<action-name>`
+
+Or create a custom router to create a custom URL format.
+
 ---
 
 ## 2.3 Demonstrate how to use URL rewrites for a catalog product view to a different URL
