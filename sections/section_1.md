@@ -2,8 +2,6 @@
 
 ## 1.1 Describe the Magento module-based architecture
 
-
-
 > ### 1.1.1 What are the significant steps to add a new module?
 
 1. Create `composer.json`
@@ -59,6 +57,12 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/prep
 
 > ### 1.2.1 Describe the Magento directory structure.
 
+The whole Magento structure can be divided into the following types:
+
+* Magento root structure
+* Modules structure
+* Themes structure
+
 ---
 
 > ### 1.2.2 What are the naming conventions, and how are namespaces established?
@@ -66,6 +70,17 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/prep
 ---
 
 > ### 1.2.3 How can you identify the files responsible for some functionality?
+
+To find the files responsible for certain functionality, search among di.xml files (Dependency Injection configuration). 
+Another way is to search in a module or theme layout files, if you need to find certain blocks. The hints, enabled in 
+the store settings (Stores -> Configuration -> Advanced -> Developer), can also prove helpful for this type of search.
+
+For actions search, use the directories structure, because actions are located at the module directory the following 
+way: `<module_dir>/Controllers/<Controller>/<Action>`). Front Name is specified in `<module_dir>/etc/<area>/routes.xml`, 
+so finding it via the file search is a relatively simple task.
+
+To search for the model functionality, use the full class or interface name (including namespace). Conduct the file 
+search, specifying the full name of the class or the interface (without leading backlash).
 
 ---
 
@@ -75,9 +90,57 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/prep
 
 > ### 1.3.1 Determine how to use configuration files in Magento.
 
+One can modify the configuration from the admin panel only when it is stored in `core_config_data` and is not overridden 
+in `app/etc/config.php`, `app/etc/env.php` or via environment variables. In case it is overridden, it is disabled at the 
+admin panel.
+
+`app/etc/config.php` and `app/etc/env.php` files contain Magento basic configuration (for instance, modules list, 
+scopes, themes, database credentials, cache config, override `core_config_data` config and other). They are generated at 
+the Magento 2 installation. `app/etc/config.php` file has shared configuration settings, while `app/etc/env.php` 
+contains settings that are specific to the installation environment. 
+
+As of the 2.2 release, the `app/etc/config.php` file is no longer an entry in the .gitignore file. This was done to 
+facilitate pipeline deployment.
+
 ---
 
 > ### 1.3.2 Which configuration files are important in the development cycle?
+
+In Magento 2, the configuration is stored at the following locations:
+
+* In xml files of modules, themes, languages and app/etc folder.
+* In the database in core_config_data table.
+* In `app/etc/config.php` and `app/etc/env.php` files.
+* In the framework variables.
+
+Below is the list of xml files inside the module:
+
+* etc/config.xml – contains the default values of the options from `Stores > Configuration` in admin panel menu, as well 
+as other options, like class names (for instance, `<model>Amazon\Payment\Model\Method\AmazonLoginMethod</model>`) and 
+attributes (for example, `<account backend_model=”Magento\Config\Model\Config\Backend\Encrypted” />`).
+* etc/di.xml and etc/<area>/di.xml – contains the configuration for dependency injection
+* etc/events.xml and etc/<area>/events.xml – the list of the events and observers
+* etc/<area>/routes.xml – routers’ list.
+* etc/acl.xml – adds module resources into the resource tree, allowing to set up access for different users.
+* etc/crontab.xml – adds and configures tasks for cron.
+* etc/module.xml – declares module name and version, as well as its dependencies from other modules.
+* etc/widget.xml – stores widget configuration.
+* etc/indexer.xml – declares a new indexation type. There, view_id is specified, which denotes the views described in 
+`etc/mview.xml`.
+* etc/mview.xml – is used to track database changes for a certain entity.
+* etc/webapi.xml – stores configurations for WEB API (REST/SOAP).
+* etc/view.xml – stores product images' values.
+* etc/product_types.xml – describes product types in a store.
+* etc/product_options.xml – describes the types of options that products can have and the classes that render options in 
+the admin.
+* etc/extension_attributes.xml – the ability to add custom attribute, introduced in Magento 2 version. The file 
+describes the attribute and its type, which can be simple, or complex, or have the form of an interface.
+* etc/catalog_attributes.xml – adds attributes to the groups. `quote_item`, `wishlist_item`, `catalog_product`, 
+`catalog_category`, `unassignable`, `used_in_autogeneration` are the standard groups. To learn more, follow the 
+link: https://www.atwix.com/magento-2/how-to-access-custom-catalog-attributes/
+* etc/adminhtml/system.xml – can relate to admin section solely, adds `Stores > Configuration` settings and describes 
+form sections and fields.
+* etc/adminhtml/menu.xml – can relate to admin area solely, adding the menu option in the admin panel.
 
 ---
 
@@ -94,6 +157,26 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/prep
 ---
 
 > ### 1.3.6 Demonstrate an ability to add different values for different scopes.
+
+In Magento 2, XML configuration files have areas: `global`, `frontend` and `adminhtml`, `crontab`, `graphql`, 
+`webapi_rest`, `webapi_soap`. You can find a list of them at `Magento\Framework\App\AreaList` class, defined via 
+`di.xml`. Certain xml files can be specified for each area separately and some may not. For instance, `event.xml` file can 
+be specified for each area (`global`, `frontend`, `adminhtml`, `etc`.), while module.xml can be specified only for 
+global.
+
+If config file is located at the module `etc` directory, its values are located in the global area. To specify 
+configuration area, place the config file into `etc/<area>` folder. This is a new concept, introduced in Magento 2. 
+Previously, in the first version of Magento, the visibility area was defined by a separate branch in XML file. 
+This introduction allows loading configurations for various visibility areas separately. If the same parameters are 
+specified for global and non-global areas (for instance, frontend or adminhtml), they will be merged and loaded 
+together. The parameters, specified in non-global area, or located in `etc/<area>` folder, have the priority.
+
+Configuration upload is executed in three steps:
+
+System level configurations upload. Loading of the files, necessary for Magento 2 launch (like `config.php`).
+Global area configurations upload. Loading of the files, located in `app/etc/` Magento 2 directory, such as `di.xml`, as 
+well as files that relate to the global area and are directly located in modules’ etc/ folders.
+Specific areas configurations upload. Loading of the files, located at `etc/adminhtml` or `etc/frontend` folders.
 
 ---
 
@@ -123,6 +206,9 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/prep
 
 > ### 1.4.4 Identify how to use DI configuration files for customizing Magento.
 
+Each module can have a global and an area-specific di.xml file. Area-specific di.xml files are recommended to be applied 
+for dependencies configuration for presentation layer, while global file – for all the rest.
+
 ---
 
 > ### 1.4.5 How can you override a native class, inject your class into another object, and use other techniques available in di.xml (for example, virtualTypes)?
@@ -142,8 +228,8 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/prepare/prep
 > ### 1.5.1 Demonstrate an understanding of plugins.
 
 A plugin, or interceptor, is a class that modifies the behavior of public class functions by intercepting a function
-call and running code before, after, or around that function call. This allows you to *substitute* or *extend* the behavior
-of original, public methods for any *class* or *interface*.
+call and running code before, after, or around that function call. This allows you to *substitute* or *extend* the 
+behavior of original, public methods for any *class* or *interface*.
 
 Extensions that wish to intercept and change the behavior of a public method can create a `Plugin` class.
 
@@ -179,19 +265,74 @@ Source: https://devdocs.magento.com/guides/v2.4/extension-dev-guide/plugins.html
 
 ---
 
-> ### 1.6.1 Demonstrate how to create a customization using an event observer.
+> ### 1.6.1 Overview.
+
+Events are commonly used in applications to handle external actions or input. Each action is interpreted as an event.
+
+Events are part of the Event-Observer pattern. This design pattern is characterized by objects (subjects) and their list
+of dependents (observers). It is a very common programming concept that works well to decouple the observed code from
+the observers. Observer is the class that implements Magento\Framework\Event\ObserverInterface interface.
+
+According to https://devdocs.magento.com/guides/v2.3/coding-standards/technical-guidelines.html:
+
+All values (including objects) passed to an event MUST NOT be modified in the event observer. Instead, plugins SHOULD BE
+used for modifying the input or output of a function.
+
+Therefore, if there is a need to modify the input data, use plugins instead of events.
 
 ---
 
-> ### 1.6.2 How are observers registered? How are they scoped for frontend or backend?
+> ### 1.6.2 Demonstrate how to create a customization using an event observer.
 
 ---
 
-> ### 1.6.3 How are automatic events created, and how should they be used?
+> ### 1.6.3 How are observers registered? How are they scoped for frontend or backend?
 
 ---
 
-> ### 1.6.4 How are scheduled jobs configured?
+> ### 1.6.4 How are automatic events created, and how should they be used?
+
+---
+
+> ### 1.6.5 How are scheduled jobs configured?
+
+To demonstrate how to configure a scheduled job, we create in the module a crontab.xml file with the similar content:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="my_module_cron_job" instance="Vendor\Module\Model\Cron" method="run">
+            <!-- Use schedule or config_path, not both -->
+            <schedule>0 * * * *</schedule>
+            <config_path>my_module/my_group/my_setting</config_path>
+        </job>
+    </group>
+</config>
+```
+
+Group element determines to which group cron jobs should be tied. Group is declared in cron_groups.xml file and contains 
+group configurations. The events inside the group have a general queue, while several groups can be launched 
+simultaneously. Example:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/cron_groups.xsd">
+    <group id="default">
+        <schedule_generate_every>15</schedule_generate_every>
+        <schedule_ahead_for>20</schedule_ahead_for>
+        <schedule_lifetime>15</schedule_lifetime>
+        <history_cleanup_every>10</history_cleanup_every>
+        <history_success_lifetime>60</history_success_lifetime>
+        <history_failure_lifetime>4320</history_failure_lifetime>
+        <use_separate_process>0</use_separate_process>
+    </group>
+</config>
+```
+
+Job element contains name (name of the job), instance (job class name) and method (job method name in the class) 
+attributes. Also, job contains schedule element (http://www.nncron.ru/help/EN/working/cron-format.htm) or config_path 
+(configuration path to the schedule value).
 
 ---
 
