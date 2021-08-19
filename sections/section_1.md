@@ -2,6 +2,12 @@
 
 ## 1.1 Describe the Magento module-based architecture
 
+> ### 1.1.0 Overview
+
+* There are five areas: `adminhtml`, `frontend`, `base`, `webapi_rest`, `webapi_soap` and `cron`. Not all areas are 
+always available. For instance, the cron area is only used when running cron jobs.
+* The three necessary files to **bootstrap** a module are `registration.php`, `etc/module.xml` and `composer.json`.
+
 > ### 1.1.1 What are the significant steps to add a new module?
 
 1. Create `composer.json`
