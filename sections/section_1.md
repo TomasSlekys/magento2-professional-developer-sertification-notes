@@ -73,6 +73,84 @@ The whole Magento structure can be divided into the following types:
 
 > ### 1.2.2 What are the naming conventions, and how are namespaces established?
 
+The root Magento directory contains these primary folders:
+
+* `app/code`: where your custom modules are found. Hopefully, very few 3rd- party modules are installed here because it 
+is difficult to remember to keep these up-to-date. Installing modules through Composer provides the module vendor with 
+* an easier way to automatically update their modules and dependencies.
+
+* `app/design/[frontend or adminhtml]`: this is where themes are stored.
+
+* `app/i18n`: this is where translation (language) packages are stored.
+
+* `app/etc/`: this is where the configuration files are stored:
+
+* `app/etc/env.php`: this is the configuration file that is per environment. This contains your database, redis, and 
+queueing (Advanced Message Queuing Protocol or AMQP) configuration, among other things. This file should NOT be in your 
+* Git repository as it contains sensitive information.
+
+* `app/etc/config.php`: this file should be committed to your Git repository. It ultimately merges with the env.php 
+file. This holds the configuration for enabling/disabling modules and can include defaults for Store Configuration and 
+theming.
+
+* `bin/`: you will type the command bin/magento thousands of times in your tenure as Magento developer … so this is 
+where this file is stored.
+
+* `dev/`: this contains the configuration for built-in tools, such as Grunt. It also contains Magento’s test suite.
+
+* `generated/`: files in this folder are created by Magento. While it is technically safe to delete in production, it’s 
+a bad idea as it will result in downtime or a slowdown on the website while Magento rebuilds this directory. This is 
+where Magento stores factory classes, interceptor classes (used to make plugins work), proxy classes (used to lazy-load 
+methods to prevent the constructor from triggering too early and causing a problem elsewhere in the system), and 
+extension attribute interfaces and classes.
+
+* `lib/`: this folder contains the internal libraries on which Magento relies. Note that jQuery is found in 
+`lib/web/jquery/`.
+
+* `pub/`: this is the directory that should be HTTP root (i.e., the directory that is browsed when you go to 
+https://bkaushik.com) for the webserver. While the root Magento folder would work, you risk exposing folders such as 
+your var folder with a misconfiguration. When you browse to a Magento website, the webserver first checks to see if 
+that exact path exists as a file. If it doesn’t, the .htaccess or Nginx configuration rewrites the request to 
+`pub/index.php`, which begins the normal Magento request.
+
+* `pub/media/`: this is where the website’s images are stored.
+
+* `pub/static/`: this contains the .css, .js and .html files that have been processed and are ready for the end-user to 
+download. If a path is requested but doesn’t exist as a file in this folder, Magento tries to create it when not in 
+production mode (or if you add a store with a new language). If your website is in developer mode, and you 
+run `bin/magento dev:source-theme:deploy`, most files in this directory will be symlinked to their sources throughout 
+the Magento codebase. In production mode, you run bin/magento setup:static-content:deploy to process and copy files 
+to this directory.
+
+*What’s the difference?* dev:source-theme:deploy creates symlinks from module’s LESS files into the pub/static 
+directory. 
+This allows LESS files changes, in modules, to always be of the latest version. setup:static-content:deploy copies 
+all necessary files (JS, HTML and LESS compiled to CSS) to the pub/static directory. Once this command is run, 
+changes to your LESS and JS files in your module will not be visible on the frontend.
+
+* `setup/`: this directory contains important files related to installing Magento. If your webserver is configured so 
+that the document root matches the Magento root directory (ie, not /pub), you can browse to your website /setup URL. 
+This configuration should be very temporary, and production’s document root should always be /pub. Why? Because a 
+simple misconfiguration (face it, this can happen) can expose sensitive information in the var/ or other directories. 
+Magento provides an easy way to avoid this issue by ensuring a correct document root. 
+But what if I need to install Magento? Either use the /setup URL (by changing your application’s document root) 
+temporarily. Or, better yet, use the CLI command: bin/magento setup:install.
+
+* `var/`: this directory contains files that are temporarily used by the Magento application or results from using it. 
+For example, logs are in var/log/. Error reports are in var/report. If you are using the file-system cache, this is 
+stored in var/cache and var/page_cache. You should only use file- system caches in your development environment and 
+never on production. The reason is that file-system storage prevents horizontal scaling (scaling Magento to multiple 
+stand-alone instances)
+
+* `vendor/`: this is where all of the Composer-installed modules are located.
+This directory can be deleted and re-created at any time on your development machine (doing this in production would 
+result in your store being down). To create this directory, run composer install (this command is different than 
+composer update in that install doesn’t change any versions and only installs what is specified in composer.lock).
+Because of this, it goes without saying that code in the vendor/ directory should never be modified. Doing so will be 
+temporary and these changes will be destroyed next time you run composer update or composer install.
+
+Source: https://bkaushik.com/magento2/description-of-magento-2-directory-structure/?fbclid=IwAR2ACc5TsjIRrL7_ui2vsize5S7ZQbW9Q3MASPFsjEML_BQkLfiTO3xsaWI
+
 ---
 
 > ### 1.2.3 How can you identify the files responsible for some functionality?
@@ -188,6 +266,9 @@ Specific areas configurations upload. Loading of the files, located at `etc/admi
 
 > ### 1.3.7 How can you fetch a system configuration value programmatically?
 
+You can use the functions contained within the `Magento\Framework\App\Config\ScopeConfigInterface` class, passing the 
+configuration path as the minimum required parameter e.g. `web/secure/base_url`.
+
 ---
 
 > ### 1.3.8 How can you override system configuration values for a given store using XML configuration?
@@ -204,9 +285,35 @@ Specific areas configurations upload. Loading of the files, located at `etc/admi
 
 > ### 1.4.2 How are objects realized in code?
 
+Since dependency injection happens automatically through the constructor, Magento must handle class creation - either 
+at the time of injection or via a factory.
+
+
+#### Class Creation During Injection
+
+First the object manager locates the proper class type. If an interface is requested, hopefully an entry in `di.xml` 
+will provide a concrete class for the interface (if not, an exception will be thrown).
+
+Then the parameters for the constructor are loaded and recursively parsed meaning that the dependencies for the 
+initially requested class are loaded as well as the dependencies of those dependencies as well.
+
+The deploy mode (`bin/magento deploy:mode:show`) determines which class loader is used:
+
+* `vendor/magento/framework/ObjectManager/Factory/Dynamic/Developer.php`
+* `vendor/magento/framework/ObjectManager/Factory/Dynamic/Production.php`
+
+#### Class Creation Via Factories
+
+Inject a class factory by adding `Factory` to the end of a class' name when injecting via constructor. Doing so, a 
+factory class will be created in the `generated` directory. Now we can use the `create()` method of this class to create
+our real class.
+
 ---
 
 > ### 1.4.3 Why is it important to have a centralized object creation process?
+
+Having a centralised process to create objects makes testing much easier. It also provides a simple interface to 
+substitute objects as well as modify existing ones.
 
 ---
 
@@ -219,13 +326,48 @@ for dependencies configuration for presentation layer, while global file – for
 
 > ### 1.4.5 How can you override a native class, inject your class into another object, and use other techniques available in di.xml (for example, virtualTypes)?
 
+#### Overriding Native Classes
+
+Preferences are used to substitute entire classes. They can also be used to specify concrete classes for interfaces:
+
+```xml
+<preference for="Magento\GoogleTagManager\Block\ListJson" type="YourCompany\YourModule\Path\To\Your\Class"/>
+```
+
+#### Injecting Your Class into Other Objects
+
+Specify a `<type>` entry with your class as an `<argument>`:
+
+```xml
+<type name="Path\To\Your\Class\To\Inject\Into">
+    <arguments>
+        <argument xsi:type="object">
+            Path\To\Your\Injected\Class
+        </argument>
+    </arguments>
+</type>
+```
+
+#### Virtual Types
+
+A virtual type allows you to create an instance of an existing class that has custom constructor arguments. This is 
+useful in cases where you need a "new" class only because the constructor arguments need to be changed. This is used 
+frequently in Magento to reduce redundant PHP classes.
+
 ---
 
 > ### 1.4.6 Given a scenario, determine how to obtain an object using the ObjectManager object.
 
+```php
+$jsonClass = Magento\Framework\App\ObjectManager::getInstance()->get(Magento\Framework\Serialize\Serializer\Json::class);
+```
+
 ---
 
 > ### 1.4.7 How would you obtain a class instance from different places in the code?
+
+Always use the `__construct` method to obtain dependencies. If you are working with a `.phtml` template, use a 
+`ViewModel` (which implements `ArgumentInterface`).
 
 ---
 
@@ -302,7 +444,7 @@ Therefore, if there is a need to modify the input data, use plugins instead of e
 
 > ### 1.6.5 How are scheduled jobs configured?
 
-To demonstrate how to configure a scheduled job, we create in the module a crontab.xml file with the similar content:
+To demonstrate how to configure a scheduled job, we create in the module a `crontab.xml` file with the similar content:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -317,7 +459,7 @@ To demonstrate how to configure a scheduled job, we create in the module a cront
 </config>
 ```
 
-Group element determines to which group cron jobs should be tied. Group is declared in cron_groups.xml file and contains 
+Group element determines to which group cron jobs should be tied. Group is declared in `cron_groups.xml` file and contains 
 group configurations. The events inside the group have a general queue, while several groups can be launched 
 simultaneously. Example:
 
@@ -337,7 +479,7 @@ simultaneously. Example:
 ```
 
 Job element contains name (name of the job), instance (job class name) and method (job method name in the class) 
-attributes. Also, job contains schedule element (http://www.nncron.ru/help/EN/working/cron-format.htm) or config_path 
+attributes. Also, job contains schedule element (http://www.nncron.ru/help/EN/working/cron-format.htm) or `config_path` 
 (configuration path to the schedule value).
 
 ---
